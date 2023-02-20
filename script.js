@@ -1,3 +1,10 @@
+const numberBtn = document.querySelectorAll("[data-number]");
+const screen = document.querySelector(".screen");
+
+numberBtn.forEach((btn) =>
+  btn.addEventListener("click", () => populate(btn.textContent))
+);
+
 // add
 function add(a, b) {
   return a + b;
@@ -28,5 +35,15 @@ function operate(operator, num1, num2) {
       return divide(num1, num2);
     default:
       return "Input not valid.";
+  }
+}
+
+// populate display
+function populate(input) {
+  console.log(input);
+  if (screen.textContent === "0") {
+    screen.textContent = input;
+  } else {
+    screen.textContent += input;
   }
 }
