@@ -5,9 +5,9 @@ const equalBtn = document.querySelector("[data-equal]");
 const clearBtn = document.querySelector("#clear");
 
 // global variable
-let tempNum1 = 0;
-let tempNum2 = 0;
-let tempOperator = "";
+let tempNum1 = null;
+let tempNum2 = null;
+let tempOperator = null;
 
 numberBtn.forEach((btn) =>
   btn.addEventListener("click", () => populate(btn.textContent))
@@ -25,7 +25,7 @@ clearBtn.addEventListener("click", () => clear());
 
 // add
 function add(a, b) {
-  return a + b;
+  return parseInt(a) + parseInt(b);
 }
 // subtract
 function subtract(a, b) {
@@ -52,13 +52,13 @@ function operate(operator, num1, num2) {
     case "÷":
       return divide(num1, num2);
     default:
-      return "Input not valid.";
+      return "0";
   }
 }
 
 // populate display
 function populate(input) {
-  if (screen.textContent === "0") {
+  if (screen.textContent === "0" || screen.textContent === tempNum1) {
     screen.textContent = input;
   } else {
     screen.textContent += input;
@@ -67,21 +67,31 @@ function populate(input) {
 
 // store number when operator is pressed
 function storeNum(num, op) {
-  tempNum1 = num;
-  tempOperator = op;
-  // TODO:
-  // display should reset/retain number in another div
-  // above main screen
-  screen.textContent = 0;
+  if (tempOperator != null) {
+    //perform equal operation
+    answer(screen.textContent);
+    //store result as new num1
+    tempNum1 = screen.textContent;
+    tempOperator = op;
+  } else {
+    tempNum1 = num;
+    tempOperator = op;
+    // TODO:
+    // display should reset/retain number in another div
+    // above main screen
+  }
 }
 
 // call operate when equal is pressed
 function answer(num2) {
   tempNum2 = num2;
   screen.textContent = operate(tempOperator, tempNum1, tempNum2);
+  tempNum2 = tempOperator = null;
 }
 
 // clear button function
 function clear() {
   screen.textContent = 0;
+  tempNum1 = tempNum2 = tempOperator = null;
 }
+
