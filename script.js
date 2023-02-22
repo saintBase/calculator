@@ -3,6 +3,7 @@ const operatorBtn = document.querySelectorAll("[data-operator]");
 const screen = document.querySelector(".screen");
 const equalBtn = document.querySelector("[data-equal]");
 const clearBtn = document.querySelector("#clear");
+const dotBtn = document.querySelector("[data-separator]");
 
 // global variable
 let tempNum1 = null;
@@ -12,16 +13,14 @@ let tempOperator = null;
 numberBtn.forEach((btn) =>
   btn.addEventListener("click", () => populate(btn.textContent))
 );
-
 operatorBtn.forEach((op) =>
   op.addEventListener("click", () =>
     storeNum(screen.textContent, op.textContent)
   )
 );
-
 equalBtn.addEventListener("click", () => answer(screen.textContent));
-
 clearBtn.addEventListener("click", () => clear());
+dotBtn.addEventListener("click", () => addSeparator());
 
 // add
 function add(a, b) {
@@ -37,20 +36,23 @@ function multiply(a, b) {
 }
 // divide
 function divide(a, b) {
-  return a / b;
+  if (b == 0) {
+    alert("You cannot divide by 0!");
+    return 0;
+  } else return a / b;
 }
 
 // operate
 function operate(operator, num1, num2) {
   switch (operator) {
     case "+":
-      return add(num1, num2);
+      return round(add(num1, num2));
     case "-":
-      return subtract(num1, num2);
+      return round(subtract(num1, num2));
     case "x":
-      return multiply(num1, num2);
+      return round(multiply(num1, num2));
     case "÷":
-      return divide(num1, num2);
+      return round(divide(num1, num2));
     default:
       return "0";
   }
@@ -95,3 +97,14 @@ function clear() {
   tempNum1 = tempNum2 = tempOperator = null;
 }
 
+// round function
+function round(num) {
+  return Math.round(num * 1000) / 1000;
+}
+
+// add separator to number
+function addSeparator(num){
+    if(!screen.textContent.includes(".")){
+        screen.textContent += ".";
+    }
+}
